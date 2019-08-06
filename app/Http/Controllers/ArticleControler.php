@@ -17,7 +17,12 @@ class ArticleControler extends Controller
     {
 
 
-        $articles = Article::all();
+        //$articles = Article::all();
+
+        //*You can get rid of 'all()' and you have to add '->get()'
+        //$articles = Article::where('title', 'New Title')->get();
+        //$articles = Article::all()->where('view', '>', 2000)->first();
+        $articles = Article::orderBy('created_at', 'desc')->take(5)->get();
 
         return view('articles', ['articles' => $articles]);
     }
@@ -29,7 +34,10 @@ class ArticleControler extends Controller
      */
     public function create()
     {
-        //
+        $article = new Article();
+        $article->title = 'New Title';
+        $article->description = 'Description Example';
+        $article->save();
     }
 
     /**
@@ -40,7 +48,10 @@ class ArticleControler extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article = new Article();
+        $article->title = 'New Title';
+        $article->description = 'Description Example';
+        $article->save();
     }
 
     /**
@@ -52,6 +63,8 @@ class ArticleControler extends Controller
     public function show($id)
     {
         $article = Article::find($id);
+
+        return view('article', ['article' => $article]);
     }
 
     /**
@@ -62,7 +75,10 @@ class ArticleControler extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::find($id);
+        $article->title = 'NEW TITLE VALUE';//$request->title
+        $article->save();
+
     }
 
     /**
@@ -74,7 +90,7 @@ class ArticleControler extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return 'it works';
     }
 
     /**
@@ -85,6 +101,9 @@ class ArticleControler extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        $article->delete();
+        //OR
+        Article::destroy([1, 3, 5]);
     }
 }
